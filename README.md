@@ -32,7 +32,7 @@ $ roslaunch p3dx_lin_vel_pid p3dx_2dnav_pid.launch ip_x:=-4 ip_y:=-4 ip_a:=3.141
 
 ## Publish Goals via RVIZ
 
-![alt text]( "Using 2D Nav Gaol to set up Goal pose")
+![alt text]( https://raw.githubusercontent.com/chungying/p3dx_2dnav_simulator/master/docs/start_and_goal.png  "Using 2D Nav Gaol to set up Goal pose")
 
 ### Test Environment
 
