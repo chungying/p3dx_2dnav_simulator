@@ -30,10 +30,12 @@ $ roslaunch p3dx_2dnav p3dx_2dnav.launch ip_x:=-4 ip_y:=-4 ip_a:=3.14159
 $ roslaunch p3dx_lin_vel_pid p3dx_2dnav_pid.launch ip_x:=-4 ip_y:=-4 ip_a:=3.14159 Kp:=1 Ki:=0 Kd:=0
 ```
 
-## Publish Goals via RVIZ
+## Publish Goals via RVIZ and Monitor via rqt_plot
+ * Using 2D Nav Gaol to set up Goal pose
+![alt text]( https://raw.githubusercontent.com/chungying/p3dx_2dnav_simulator/master/docs/start_and_goal.png)
 
-![alt text]( https://raw.githubusercontent.com/chungying/p3dx_2dnav_simulator/master/docs/start_and_goal.png  "Using 2D Nav Gaol to set up Goal pose")
-
+ * Monitoring the reference velocity (blue line) and the velocity of p3dx (red line). This rqt_plot is set in [rat_plot.launch](p3dx_2dnav/launch/rqt_plot.launch) and called by both [p3dx_2dnav.launch](p3dx_2dnav/launch/p3dx_2dnav.launch) and [p3dx_2dnav_pid.launch](p3dx_lin_vel_pid/launch/p3dx_2dnav_pid.launch).
+![alt text]( https://raw.githubusercontent.com/chungying/p3dx_2dnav_simulator/master/docs/rqt_plot_monitor.png )
 ### Test Environment
 
  * Ubuntu 14.04
