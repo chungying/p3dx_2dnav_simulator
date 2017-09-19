@@ -19,7 +19,7 @@ $ catkin_make
 $ roslaunch p3dx_2dnav p3dx_2dnav.launch
 ```
  * Assignin robot to be at different initial pose
-  - p3dx at (-4, -4, 3.14159) pose
+    - p3dx at (-4, -4, 3.14159) pose
 ```
 $ roslaunch p3dx_2dnav p3dx_2dnav.launch ip_x:=-4 ip_y:=-4 ip_a:=3.14159
 ```
