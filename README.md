@@ -30,8 +30,8 @@ $ roslaunch p3dx_lin_vel_pid p3dx_2dnav_pid.launch ip_x:=-4 ip_y:=-4 ip_a:=3.141
 ```
 ## Test Environment
 
-OS: Ubuntu 14.04
-ROS: Indigo
+ * OS: Ubuntu 14.04
+ * ROS: Indigo
 
 ### Stuff used to make this:
 
