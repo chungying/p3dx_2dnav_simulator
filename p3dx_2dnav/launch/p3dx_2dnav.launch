@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+
+<launch>
+  <!--MAP SERVER-->
+  <arg name="map_yaml" default="$(find p3dx_2dnav)/maps/willowgarage/willowgarage.yaml" />
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_yaml)" />
+
+  <!--AMCL and GAZEBO-->
+  <arg name="ip_x" default="-9" />
+  <arg name="ip_y" default="8.4" />
+  <arg name="ip_a" default="0" />
+
+  <!--AMCL-->
+  <arg name="scan" default="/p3dx/laser/scan" />
+  <param name="amcl/initial_pose_x" type="double" value="$(arg ip_x )" />
+  <param name="amcl/initial_pose_y" type="double" value="$(arg ip_y )" />
+  <param name="amcl/initial_pose_a" type="double" value="$(arg ip_a )" />
+  <param name="amcl/initial_cov_xx" type="double" value="0.01" />
+  <param name="amcl/initial_cov_yy" type="double" value="0.01" />
+  <param name="amcl/initial_cov_aa" type="double" value="0.01" />
+  <node name="amcl" pkg="amcl" type="amcl" args="scan:=$(arg scan)"/>
+
+  <!--P3DX in GAZEBO-->
+  <include file="$(find p3dx_gazebo)/launch/gazebo.launch">
+    <arg name="gui" value="false"/>
+    <arg name="init_x" value="$(arg ip_x )"/>
+    <arg name="init_y" value="$(arg ip_y )"/>
+    <arg name="init_z" value="$(arg ip_a )"/>
+  </include>
+
+  <!--MOVE BASE for COSTMAP-->
+  <arg name="cmd_ns" default="p3dx" />
+  <include file="$(find p3dx_2dnav)/launch/move_base.launch">
+    <arg name="cmd_vel" value="/$(arg cmd_ns)/cmd_vel"/>
+  </include>
+
+  <!--RVIZ-->
+  <include file="$(find p3dx_description)/launch/rviz.launch">
+    <arg name="rviz_node_args" value="-d $(find p3dx_2dnav)/config/p3dx_2dnav.rviz"/>
+  </include> 
+
+  <!--rqt plotting-->
+  <include file="$(find p3dx_2dnav)/launch/rqt_plot.launch">
+    <arg name="ref_ns" value="$(arg cmd_ns)"/>
+  </include>
+</launch>

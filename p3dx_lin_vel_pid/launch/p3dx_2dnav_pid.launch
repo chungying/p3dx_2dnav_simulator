@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<launch>
+  <!--PID controller-->
+  <arg name="Kp" default="0.8"/>
+  <arg name="Ki" default="0.001"/>
+  <arg name="Kd" default="0.01"/>
+  <node name="p3dx_linear_velocity_pid_controller" pkg="p3dx_lin_vel_pid" type="p3dx_pid_controller" args="$(arg Kp) $(arg Ki) $(arg Kd) "/>
+
+  <!--MAP SERVER-->
+  <arg name="map_yaml" default="$(find p3dx_2dnav)/maps/willowgarage/willowgarage.yaml" />
+  <!--AMCL and GAZEBO-->
+  <arg name="ip_x" default="-9" />
+  <arg name="ip_y" default="8.4" />
+  <arg name="ip_a" default="0" />
+  <!--p3dx_2dnav launch file-->
+  <include file="$(find p3dx_2dnav)/launch/p3dx_2dnav.launch">
+    <!--Map Server-->
+    <arg name="map_yaml" value="$(arg map_yaml)" />
+    <!--AMCL and P3DX in GAZEBO-->
+    <arg name="ip_x" value="$(arg ip_x )" />
+    <arg name="ip_y" value="$(arg ip_y )" />
+    <arg name="ip_a" value="$(arg ip_a )" />
+    <!--MOVE BASE for COSTMAP and rqt plotting-->
+    <arg name="cmd_ns" value="move_base" />
+  </include>
+</launch>

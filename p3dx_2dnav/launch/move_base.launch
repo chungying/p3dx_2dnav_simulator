@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="cmd_vel" default="move_base/cmd_vel"/>
+  <!--MOVE BASE for COSTMAP-->
+  <node name="move_base" pkg="move_base" type="move_base" respawn="false" output="screen" args="cmd_vel:=$(arg cmd_vel)">
+    <rosparam file="$(find p3dx_2dnav)/yamls/costmap_common_params.yaml" command="load" ns="global_costmap" /> 
+    <rosparam file="$(find p3dx_2dnav)/yamls/global_costmap_params.yaml" command="load" /> 
+    <rosparam file="$(find p3dx_2dnav)/yamls/costmap_common_params.yaml" command="load" ns="local_costmap" /> 
+    <rosparam file="$(find p3dx_2dnav)/yamls/local_costmap_params.yaml" command="load" /> 
+    <rosparam file="$(find p3dx_2dnav)/yamls/dwa_local_planner_params.yaml" command="load" /> 
+    <remap from="odom" to="p3dx/odom"/>
+  </node>
+
+</launch>

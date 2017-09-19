@@ -1,0 +1,14 @@
+obstacle_range: 10
+raytrace_range: 5.0
+footprint: [[0.26, 0.0], [0.0, 0.158], [-0.2485, 0.0], [0.0, -0.158]]
+#robot_radius: ir_of_robot
+inflation_radius: 0.4
+observation_sources: laser_scan_sensor
+laser_scan_sensor: {
+      sensor_frame: /lms100, 
+      data_type: LaserScan, 
+      topic: /p3dx/laser/scan, 
+      expected_update_rate: 0.1, 
+      marking: true, 
+      clearing: true}
+

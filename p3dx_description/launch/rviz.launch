@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="gui" default="false" />
+  <param name="use_gui" value="$(arg gui)"/>
+
+  <!--RVIZ settings-->
+  <param name="robot_description"
+		command="$(find xacro)/xacro.py '$(find p3dx_description)/urdf/pioneer3dx.xacro'" />
+  <arg name="rviz_node_args" default="-d $(find urdf_tutorial)/urdf.rviz" />
+  <node name="rviz" pkg="rviz" type="rviz" args="$(arg rviz_node_args)" />
+
+  <!--state publishers settins-->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+</launch>
