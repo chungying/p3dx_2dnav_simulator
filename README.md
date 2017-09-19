@@ -14,11 +14,12 @@ $ catkin_make
 ## Execution without PID contorller
 
  * Running the original settings for a p3dx robot 
-    - p3dx in Willog Garage world at (0, 0, 0) pose.
+    - p3dx in Willog Garage world at (0, 0, 0) pose
 ```
 $ roslaunch p3dx_2dnav p3dx_2dnav.launch
 ```
-    - p3dx at (-4, -4, 3.14159) pose.
+ * Assignin robot to be at different initial pose
+  - p3dx at (-4, -4, 3.14159) pose
 ```
 $ roslaunch p3dx_2dnav p3dx_2dnav.launch ip_x:=-4 ip_y:=-4 ip_a:=3.14159
 ```
