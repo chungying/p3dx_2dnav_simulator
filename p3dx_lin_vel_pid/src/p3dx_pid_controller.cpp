@@ -86,15 +86,15 @@ Twist pid(TwistStampedConstPtr& latest_ref, std::vector<OdometryConstPtr>& odo_v
     double dt = (odo_vec[1]->header.stamp - odo_vec[0]->header.stamp).toSec();
     
     cur_sta_x.err = latest_ref->twist.linear.x - odo_vec[1]->twist.twist.linear.x;
-    cur_sta_x.integral = cur_sta_x.err + pre_sta_x.integral;//TODO integral = err*dt +pre_integral
-    cur_sta_x.differential = cur_sta_x.err - pre_sta_x.err;
+    cur_sta_x.integral = cur_sta_x.err*dt + pre_sta_x.integral;//integral = err*dt +pre_integral
+    cur_sta_x.differential = (cur_sta_x.err - pre_sta_x.err) / dt;
     
     double output_x = gains_x.Kp * cur_sta_x.err + 
-                      gains_x.Ki * cur_sta_x.integral * dt + 
-                      gains_x.Kd * cur_sta_x.differential / dt;
+                      gains_x.Ki * cur_sta_x.integral + 
+                      gains_x.Kd * cur_sta_x.differential;
     //TODO maximum speed should be an argument of this node
     if(abs(output_x)>1.0)
-      output_x = 0.6;//TODO this saturation should be an argument as well.
+      output_x = 0.5;//TODO this saturation should be an argument as well.
     pre_sta_x.err = cur_sta_x.err;
     pre_sta_x.integral = cur_sta_x.integral;
     pre_sta_x.differential = cur_sta_x.differential;

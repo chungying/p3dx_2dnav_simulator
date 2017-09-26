@@ -3,7 +3,7 @@
 <launch>
   <!--PID controller-->
   <arg name="Kp" default="0.8"/>
-  <arg name="Ki" default="0.001"/>
+  <arg name="Ki" default="0.01"/>
   <arg name="Kd" default="0.01"/>
   <node name="p3dx_linear_velocity_pid_controller" pkg="p3dx_lin_vel_pid" type="p3dx_pid_controller" args="$(arg Kp) $(arg Ki) $(arg Kd) "/>
 
