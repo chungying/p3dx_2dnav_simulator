@@ -10,17 +10,17 @@
   <!--MAP SERVER-->
   <arg name="map_yaml" default="$(find p3dx_2dnav)/maps/willowgarage/willowgarage.yaml" />
   <!--AMCL and GAZEBO-->
-  <arg name="ip_x" default="-9" />
-  <arg name="ip_y" default="8.4" />
-  <arg name="ip_a" default="0" />
+  <arg name="init_x" default="-9" />
+  <arg name="init_y" default="8.4" />
+  <arg name="init_a" default="0" />
   <!--p3dx_2dnav launch file-->
   <include file="$(find p3dx_2dnav)/launch/p3dx_2dnav.launch">
     <!--Map Server-->
     <arg name="map_yaml" value="$(arg map_yaml)" />
     <!--AMCL and P3DX in GAZEBO-->
-    <arg name="ip_x" value="$(arg ip_x )" />
-    <arg name="ip_y" value="$(arg ip_y )" />
-    <arg name="ip_a" value="$(arg ip_a )" />
+    <arg name="init_x" value="$(arg init_x )" />
+    <arg name="init_y" value="$(arg init_y )" />
+    <arg name="init_a" value="$(arg init_a )" />
     <!--MOVE BASE for COSTMAP and rqt plotting-->
     <arg name="cmd_ns" value="move_base" />
   </include>

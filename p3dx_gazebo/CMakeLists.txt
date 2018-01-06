@@ -6,7 +6,6 @@ project(p3dx_gazebo)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   gazebo_ros
-  p3dx_control
   p3dx_description
 )
 
@@ -55,7 +54,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES p3dx_gazebo
-#  CATKIN_DEPENDS gazebo_ros p3dx_control p3dx_description
+#  CATKIN_DEPENDS gazebo_ros p3dx_description
 #  DEPENDS system_lib
 )
 

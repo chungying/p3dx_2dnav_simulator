@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<robot>
+  <xacro:macro name="p3dx_laser" params="parent noise contact">
+
+  <!-- lms100 laser -->
+    <link name="lms100">
+      <inertial>
+        <mass value="1e-5" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://p3dx_description/meshes/lms100.dae" />     
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <box size="0.1 0.1 0.1" />
+        </geometry>
+        <surface>
+          <contact collide_without_contact="${contact}" />
+        </surface>
+      </collision>
+    </link>
+
+    <joint name="lms100_joint" type="fixed">
+      <axis xyz="0 1 0" />
+      <origin xyz="0.16 0 0.15" rpy="0 0 0" />
+      <parent link="${parent}" />
+      <child link="lms100" />
+    </joint>
+
+    <!-- gazebo lms100 -->
+    <gazebo reference="lms100">
+      <sensor type="ray" name="head_hokuyo_sensor">
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>false</visualize>
+        <update_rate>50</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>360</samples>
+              <resolution>1</resolution>
+              <min_angle>-1.570796</min_angle>
+              <max_angle>1.570796</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.10</min>
+            <max>30.0</max>
+            <resolution>0.01</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <!-- Noise parameters based on published spec for Hokuyo laser achieving 
+            "+-30mm" accuracy at range < 10m. A mean of 0.0m and stddev of 0.01m will 
+            put 99.7% of samples within 0.03m of the true reading. -->
+            <mean>0.0</mean>
+            <!--stddev>0.01</stddev-->
+            <stddev>${noise}</stddev>
+          </noise>
+        </ray>
+        <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+          <topicName>${ns}/laser/scan</topicName>
+          <frameName>lms100</frameName>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+</robot>

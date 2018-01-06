@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="ref_ns" default="p3dx"/>
-  <node name="plot_vx" pkg="rqt_plot" type="rqt_plot" args="/$(arg ref_ns)/cmd_vel/linear/x /p3dx/odom/twist/twist/linear/x"/>
-  <arg name="comp_ns" default="p3dx"/>
+  <!--node name="plot_vx" pkg="rqt_plot" type="rqt_plot" args="/$(arg ref_ns)/cmd_vel/linear/x /p3dx/odom/twist/twist/linear/x"/-->
+  <!--arg name="comp_ns" default="p3dx"/-->
+  <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot" args="/amcl_pose/pose/pose/position/x /p3dx/odom/pose/pose/position/x "/>
 
 </launch>

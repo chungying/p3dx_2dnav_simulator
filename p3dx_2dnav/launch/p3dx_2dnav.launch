@@ -1,32 +1,38 @@
 <?xml version="1.0"?>
 
 <launch>
+  <env name="ROSCONSOLE_CONFIG_FILE" 
+     value="$(find p3dx_2dnav)/config/custom_rosconsole.conf"/>
   <!--MAP SERVER-->
-  <arg name="map_yaml" default="$(find p3dx_2dnav)/maps/willowgarage/willowgarage.yaml" />
+  <arg name="map_yaml" default="$(find p3dx_2dnav)/maps/willowgarage/willowgarage-refined.yaml" />
   <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_yaml)" />
 
   <!--AMCL and GAZEBO-->
-  <arg name="ip_x" default="-9" />
-  <arg name="ip_y" default="8.4" />
-  <arg name="ip_a" default="0" />
-
+  <arg name="init_x" default="-9" />
+  <arg name="init_y" default="8.4" />
+  <arg name="init_a" default="0" />
   <!--AMCL-->
-  <arg name="scan" default="/p3dx/laser/scan" />
-  <param name="amcl/initial_pose_x" type="double" value="$(arg ip_x )" />
-  <param name="amcl/initial_pose_y" type="double" value="$(arg ip_y )" />
-  <param name="amcl/initial_pose_a" type="double" value="$(arg ip_a )" />
-  <param name="amcl/initial_cov_xx" type="double" value="0.01" />
-  <param name="amcl/initial_cov_yy" type="double" value="0.01" />
-  <param name="amcl/initial_cov_aa" type="double" value="0.01" />
-  <node name="amcl" pkg="amcl" type="amcl" args="scan:=$(arg scan)"/>
+  <arg name="scan_topic" default="/p3dx/laser/scan"/>
+  <node name="amcl" pkg="amcl" type="amcl" args="">
+    <remap from="scan" to="$(arg scan_topic)" />
+    <param name="initial_pose_x" type="double" value="$(arg init_x )" />
+    <param name="initial_pose_y" type="double" value="$(arg init_y )" />
+    <param name="initial_pose_a" type="double" value="$(arg init_a )" />
+    <param name="initial_cov_xx" type="double" value="0.01" />
+    <param name="initial_cov_yy" type="double" value="0.01" />
+    <param name="initial_cov_aa" type="double" value="0.01" />
+  </node>
 
   <!--P3DX in GAZEBO-->
   <include file="$(find p3dx_gazebo)/launch/gazebo.launch">
     <arg name="gui" value="false"/>
-    <arg name="init_x" value="$(arg ip_x )"/>
-    <arg name="init_y" value="$(arg ip_y )"/>
-    <arg name="init_z" value="$(arg ip_a )"/>
+    <arg name="init_x" value="$(arg init_x )"/>
+    <arg name="init_y" value="$(arg init_y )"/>
+    <arg name="init_a" value="$(arg init_a )"/>
   </include>
+  <!--state publishers settins-->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
 
   <!--MOVE BASE for COSTMAP-->
   <arg name="cmd_ns" default="p3dx" />

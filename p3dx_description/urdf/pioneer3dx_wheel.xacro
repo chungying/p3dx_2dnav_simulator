@@ -23,109 +23,111 @@ work original in ucs-ros-pkg.
 
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-	<!-- properties (constants) -->
-	<property name="M_PI" value="3.14159" />
+  <!-- properties (constants) -->
+  <property name="M_PI" value="3.14159" />
+  <!-- right/left hubcap + wheel -->
+  <xacro:macro name="p3dx_wheel" params="suffix parent reflect contact">
+    <!-- link wheel -->
+    <link name="p3dx_${suffix}_wheel">
+      <inertial>
+        <mass value="0.5" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.012411765597" ixy="0" ixz="0" iyy="0.015218160428"
+          iyz="0" izz="0.011763977943" />
+      </inertial>
+      <visual name="base_visual">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry name="pioneer_geom">
+          <mesh filename="package://p3dx_description/meshes/${suffix}_wheel.stl" />
+        </geometry>
+        <material name="WheelBlack">
+          <color rgba="0.117 0.117 0.117 1" />
+        </material>
+      </visual>
+      <collision name='collision'>
+        <origin xyz="0 0 0" rpy="${-3.1415927/2} 0 0" />
+        <geometry>
+          <!--<mesh filename="package://p3dx_description/meshes/${suffix}_wheel.stl"/> -->
+          <cylinder radius="0.09" length="0.01" />
+        </geometry>
+        <surface>
+          <contact collide_without_contact="${contact}"/>
+        </surface>
+      </collision>
+    </link>
+  
+    <!-- joint wheel to hubcap--> 
+    <joint name="base_${suffix}_hubcap_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <parent link="p3dx_${suffix}_wheel" />
+      <child link="p3dx_${suffix}_hubcap" />
+    </joint>
+  
+    <!-- link hubcap -->
+    <link name="p3dx_${suffix}_hubcap">
+      <inertial>
+        <mass value="0.01" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.012411765597" ixy="0" ixz="0" iyy="0.015218160428"
+          iyz="0" izz="0.011763977943" />
+      </inertial>
+      <visual name="base_visual">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry name="pioneer_geom">
+          <mesh filename="package://p3dx_description/meshes/${suffix}_hubcap.stl" />
+        </geometry>
+        <material name="HubcapYellow">
+          <color rgba="1.0 0.811 0.151 1.0" />
+        </material>
+      </visual>
+      <collision name='collision'>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <box size="0 0 0" />
+        </geometry>
+        <surface>
+          <contact collide_without_contact="${contact}"/>
+        </surface>
+      </collision>
+    </link>
 
-	<!-- right/left hubcap + wheel -->
-	<xacro:macro name="p3dx_wheel" params="suffix parent reflect">
-	
-		<!-- wheel -->
-		<link name="p3dx_${suffix}_wheel">
-			<inertial>
-				<mass value="0.5" />
-				<origin xyz="0 0 0" />
-				<inertia ixx="0.012411765597" ixy="0" ixz="0" iyy="0.015218160428"
-					iyz="0" izz="0.011763977943" />
-			</inertial>
+    <!-- joint ${parent} to wheel --> 
+    <joint name="base_${suffix}_wheel_joint" type="continuous">
+      <axis xyz="0 1 0" />
+      <anchor xyz="0 0 0" />
+      <limit effort="100" velocity="100" />
+      <joint_properties damping="0.0" friction="0.0" />
+      <origin xyz="0 ${reflect*0.158} 0.091" rpy="0 0 0" />
+      <parent link="${parent}" />
+      <child link="p3dx_${suffix}_wheel" />
+    </joint>
+  
+    <!-- gazebo wheel_joint -->
+    <transmission name="${parent}_${suffix}_wheel_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="base_${suffix}_wheel_joint">
+        <hardwareInterface>EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="base_${suffix}_wheel_motor">
+        <hardwareInterface>EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>${reflect * 624/35 * 80/19}</mechanicalReduction>
+      </actuator>
+    </transmission>
 
-			<visual name="base_visual">
-				<origin xyz="0 0 0" rpy="0 0 0" />
-				<geometry name="pioneer_geom">
-					<mesh filename="package://p3dx_description/meshes/${suffix}_wheel.stl" />
-				</geometry>
-				<material name="WheelBlack">
-					<color rgba="0.117 0.117 0.117 1" />
-				</material>
-			</visual>
+    <!-- gazebo hubcap --> 
+    <gazebo reference="p3dx_${suffix}_hubcap">
+      <material>Gazebo/Yellow</material>
+    </gazebo>
 
-			<collision>
-				<origin xyz="0 0 0" rpy="${-3.1415927/2} 0 0" />
-				<geometry>
-					<!--<mesh filename="package://p3dx_description/meshes/${suffix}_wheel.stl"/> -->
-					<cylinder radius="0.09" length="0.01" />
-				</geometry>
-			</collision>
-		</link>
-
-		<joint name="base_${suffix}_hubcap_joint" type="fixed">
-			<origin xyz="0 0 0" rpy="0 0 0" />
-			<parent link="p3dx_${suffix}_wheel" />
-			<child link="p3dx_${suffix}_hubcap" />
-		</joint>
-
-		<!-- hubcap -->
-		<link name="p3dx_${suffix}_hubcap">
-			<inertial>
-				<mass value="0.01" />
-				<origin xyz="0 0 0" />
-				<inertia ixx="0.012411765597" ixy="0" ixz="0" iyy="0.015218160428"
-					iyz="0" izz="0.011763977943" />
-			</inertial>
-
-			<visual name="base_visual">
-				<origin xyz="0 0 0" rpy="0 0 0" />
-				<geometry name="pioneer_geom">
-					<mesh filename="package://p3dx_description/meshes/${suffix}_hubcap.stl" />
-				</geometry>
-
-				<material name="HubcapYellow">
-					<color rgba="1.0 0.811 0.151 1.0" />
-				</material>
-			</visual>
-
-			<collision>
-				<origin xyz="0 0 0" rpy="0 0 0" />
-				<geometry>
-					<box size="0 0 0" />
-				</geometry>
-			</collision>
-		</link>
-
-		<joint name="base_${suffix}_wheel_joint" type="continuous">
-			<axis xyz="0 1 0" />
-			<anchor xyz="0 0 0" />
-			<limit effort="100" velocity="100" />
-			<joint_properties damping="0.0" friction="0.0" />
-			<origin xyz="0 ${reflect*0.158} 0.091" rpy="0 0 0" />
-			<parent link="base_link" />
-			<child link="p3dx_${suffix}_wheel" />
-		</joint>
-		
-		<!-- gazebo elements -->
-		<transmission name="${parent}_${suffix}_wheel_trans">
-			<type>transmission_interface/SimpleTransmission</type>
-			<joint name="base_${suffix}_wheel_joint">
-				<hardwareInterface>EffortJointInterface</hardwareInterface>
-			</joint>
-			<actuator name="base_${suffix}_wheel_motor">
-				<hardwareInterface>EffortJointInterface</hardwareInterface>
-				<mechanicalReduction>${reflect * 624/35 * 80/19}</mechanicalReduction>
-			</actuator>
-		</transmission>
-
-		<gazebo reference="p3dx_${suffix}_hubcap">
-			<material>Gazebo/Yellow</material>
-		</gazebo>
-
-		<gazebo reference="p3dx_${suffix}_wheel">
-			<material>Gazebo/Black</material>
-			<mu1>0.5</mu1>
-			<mu2>50.0</mu2>
-			<kp>100000000.0</kp>
-			<kd>1.0</kd>
-		</gazebo>
-
-	</xacro:macro>
-
+    <!-- gazego wheel -->    
+    <gazebo reference="p3dx_${suffix}_wheel">
+      <material>Gazebo/Black</material>
+      <mu1>0.5</mu1><!--friction coefficient-->
+      <mu2>50.0</mu2>
+      <kp>100000000.0</kp><!--stiffness-->
+      <kd>1.0</kd><!--damping-->
+    </gazebo>
+  
+  </xacro:macro>
 </robot>
 
