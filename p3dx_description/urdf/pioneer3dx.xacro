@@ -27,11 +27,11 @@ work original in ucs-ros-pkg.
   <xacro:arg name="contact" default="1"/>
   <xacro:arg name="laser_noise" default="0.01"/>
   <xacro:arg name="odom_source" default="world"/>
-  <xacro:arg name="baseFrame" default="base_link"/>
-  <xacro:arg name="mapFrame" default="map"/>
-  <xacro:arg name="worldFrame" default="world"/>
-  <xacro:arg name="odometryFrame" default="odom"/>
-  <xacro:arg name="laserFrame" default="lms100"/>
+  <xacro:arg name="base_frame" default="base_link"/>
+  <xacro:arg name="map_frame" default="map"/>
+  <xacro:arg name="world_frame" default="world"/>
+  <xacro:arg name="odometry_frame" default="odom"/>
+  <xacro:arg name="laser_frame" default="lms100"/>
   <!-- import all gazebo-customization elements, including gazebo colors -->
   <xacro:include filename="$(find p3dx_description)/urdf/pioneer3dx.gazebo" />
   <!-- import the pioneer 3dx's wheels -->
@@ -247,7 +247,7 @@ work original in ucs-ros-pkg.
   </joint>
 
   <!-- lms100 laser -->
-  <link name="$(arg laserFrame)">
+  <link name="$(arg laser_frame)">
     <inertial>
       <mass value="1e-5" />
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -270,11 +270,11 @@ work original in ucs-ros-pkg.
     </collision>
   </link>
 
-  <joint name="base_$(arg laserFrame)_joint" type="fixed">
+  <joint name="base_$(arg laser_frame)_joint" type="fixed">
     <axis xyz="0 1 0" />
     <origin xyz="0.16 0 0.15" rpy="0 0 0" />
     <parent link="base_link" />
-    <child link="$(arg laserFrame)" />
+    <child link="$(arg laser_frame)" />
   </joint>
 
 </robot>

@@ -30,9 +30,6 @@
     <arg name="init_y" value="$(arg init_y )"/>
     <arg name="init_a" value="$(arg init_a )"/>
   </include>
-  <!--state publishers settins-->
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
 
   <!--MOVE BASE for COSTMAP-->
   <arg name="cmd_ns" default="p3dx" />

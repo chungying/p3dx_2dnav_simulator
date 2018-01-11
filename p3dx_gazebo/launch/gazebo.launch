@@ -1,38 +1,41 @@
 <?xml version="1.0"?>
 
 <launch>
-	<!-- these are the arguments you can pass this launch file, for example 
-		paused:=true -->
-	<arg name="paused" default="false" />
-	<arg name="use_sim_time" default="true" />
-	<arg name="gui" default="true" />
-	<arg name="headless" default="false" />
-	<arg name="debug" default="false" />
-	<arg name="init_x" default="0" />
-	<arg name="init_y" default="0" />
-	<arg name="init_a" default="0" />
-	<arg name="contact" default="1" />
-	<arg name="laser_noise" default="0.01" />
-	<arg name="odom_source" default="encoder" />
+  <!-- these are the arguments you can pass this launch file, for example paused:=true -->
+  <arg name="paused" default="false" />
+  <arg name="use_sim_time" default="true" />
+  <arg name="gui" default="true" />
+  <arg name="headless" default="false" />
+  <arg name="debug" default="false" />
+  <arg name="init_x" default="0" />
+  <arg name="init_y" default="0" />
+  <arg name="init_a" default="0" />
+  <arg name="contact" default="1" />
+  <arg name="laser_noise" default="0.01" />
+  <arg name="odom_source" default="encoder" />
+  <arg name="base_frame" default="base_link"/>
+  <arg name="map_frame" default="map"/>
+  <arg name="world_frame" default="world"/>
+  <arg name="odometry_frame" default="odom"/>
+  <arg name="laser_frame" default="lms100"/>
+  
+  <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find p3dx_gazebo)/worlds/p3dx.world" unless="$(arg contact)" />
+    <arg name="world_name" value="$(find p3dx_gazebo)/worlds/p3dx_contactfree.world" if="$(arg contact)" />
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="$(arg paused)" />
+    <arg name="use_sim_time" value="$(arg use_sim_time)" />
+    <arg name="headless" value="$(arg headless)" />
+  </include>
 
-	<!-- We resume the logic in empty_world.launch, changing only the name of 
-		the world to be launched -->
-	<include file="$(find gazebo_ros)/launch/empty_world.launch">
-		<arg name="world_name" value="$(find p3dx_gazebo)/worlds/p3dx.world" unless="$(arg contact)" />
-		<arg name="world_name" value="$(find p3dx_gazebo)/worlds/p3dx_contactfree.world" if="$(arg contact)" />
-		<arg name="debug" value="$(arg debug)" />
-		<arg name="gui" value="$(arg gui)" />
-		<arg name="paused" value="$(arg paused)" />
-		<arg name="use_sim_time" value="$(arg use_sim_time)" />
-		<arg name="headless" value="$(arg headless)" />
-	</include>
+  <!-- Load the URDF into the ROS Parameter Server -->
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find p3dx_description)/urdf/pioneer3dx.xacro' contact:=$(arg contact) laser_noise:=$(arg laser_noise) odom_source:=$(arg odom_source) base_frame:=$(arg base_frame) map_frame:=$(arg map_frame) world_frame:=$(arg world_frame) odometry_frame:=$(arg odometry_frame) laser_frame:=$(arg laser_frame)" />
 
-	<!-- Load the URDF into the ROS Parameter Server -->
-	<param name="robot_description"
-		command="$(find xacro)/xacro.py '$(find p3dx_description)/urdf/pioneer3dx.xacro' contact:=$(arg contact) noise:=$(arg laser_noise) odom_source:=$(arg odom_source)" />
-
-	<!-- Run a python script to the send a service call to gazebo_ros to spawn 
-		a URDF robot -->
-	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
-		respawn="false" output="screen" args="-urdf -model p3dx -param robot_description -x $(arg init_x) -y $(arg init_y) -Y $(arg init_a)" />
+  <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model p3dx -param robot_description -x $(arg init_x) -y $(arg init_y) -Y $(arg init_a)" />
+  <!--state publishers settins-->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
 </launch>

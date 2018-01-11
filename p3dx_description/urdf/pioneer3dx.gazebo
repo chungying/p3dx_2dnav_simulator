@@ -74,8 +74,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       <wheelSeparation>0.39</wheelSeparation>
       <wheelDiameter>0.15</wheelDiameter>
       <commandTopic>${ns}/cmd_vel</commandTopic>
-      <odometryTopic>${ns}/$(arg odometryFrame)</odometryTopic>
-      <odometryFrame>$(arg odometryFrame)</odometryFrame>
+      <odometryTopic>${ns}/$(arg odometry_frame)</odometryTopic>
+      <odometryFrame>$(arg odometry_frame)</odometryFrame>
       <robotBaseFrame>base_link</robotBaseFrame>
       <publishWheelJointState>true</publishWheelJointState>
       <!--odometrySource>encoder</odometrySource-->
@@ -99,11 +99,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
    </gazebo>
             
   <!-- lms100 -->
-  <gazebo reference="$(arg laserFrame)">
+  <gazebo reference="$(arg laser_frame)">
     <sensor type="ray" name="head_hokuyo_sensor">
       <pose>0 0 0 0 0 0</pose>
       <visualize>false</visualize>
-      <update_rate>100</update_rate>
+      <update_rate>20</update_rate>
       <ray>
         <scan>
           <horizontal>
@@ -130,7 +130,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       </ray>
       <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
         <topicName>${ns}/laser/scan</topicName>
-        <frameName>$(arg laserFrame)</frameName>
+        <frameName>$(arg laser_frame)</frameName>
       </plugin>
     </sensor>
   </gazebo>
