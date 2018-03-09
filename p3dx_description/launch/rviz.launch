@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="gui" default="false" />
+  <arg name="rviz_node_args" default="-d $(find urdf_tutorial)/urdf.rviz" />
   <param name="use_gui" value="$(arg gui)"/>
-
+  
   <!--RVIZ settings-->
   <param name="robot_description"
 		command="$(find xacro)/xacro.py '$(find p3dx_description)/urdf/pioneer3dx.xacro'" />
-  <arg name="rviz_node_args" default="-d $(find urdf_tutorial)/urdf.rviz" />
   <node name="rviz" pkg="rviz" type="rviz" args="$(arg rviz_node_args)" />
 
   <!--state publishers are moved to p3dx_2dnav.launch-->

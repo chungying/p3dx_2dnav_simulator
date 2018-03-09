@@ -3,9 +3,9 @@
 #http://www.ros.org/wiki/dwa_local_planner
 DWAPlannerROS:
   acc_lim_th: 3.2
-  acc_lim_x: 2.5
-  acc_lim_y: 2.5
-  max_vel_x: 0.3
+  acc_lim_x: 1.5
+  acc_lim_y: 1.5
+  max_vel_x: 0.35
   min_vel_x: 0.0
   max_vel_y: 0.1
   min_vel_y: -0.1
@@ -17,7 +17,7 @@ DWAPlannerROS:
   sim_granularity: 0.025
   goal_distance_bias: 32.0
   path_distance_bias: 24.0
-  occdist_scale: 0.01
+  occdist_scale: 0.1
   stop_time_buffer: 0.2
   oscillation_reset_dist: 0.05
   forward_point_distance: 0.325
@@ -34,4 +34,4 @@ DWAPlannerROS:
 
 TrajectoryPlannerROS:
   controller_freqeuncy: 50
-  max_vel_x: 0.35
+  max_vel_x: 0.8

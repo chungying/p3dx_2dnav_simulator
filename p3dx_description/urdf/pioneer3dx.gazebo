@@ -30,8 +30,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </plugin>
   </gazebo>
 
-  <!-- base_link -->
-  <gazebo reference="base_link">
+  <!-- $(arg base_frame) -->
+  <gazebo reference="$(arg base_frame)">
     <material>Gazebo/Red</material>
   </gazebo>
 
@@ -76,7 +76,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       <commandTopic>${ns}/cmd_vel</commandTopic>
       <odometryTopic>${ns}/$(arg odometry_frame)</odometryTopic>
       <odometryFrame>$(arg odometry_frame)</odometryFrame>
-      <robotBaseFrame>base_link</robotBaseFrame>
+      <robotBaseFrame>$(arg base_frame)</robotBaseFrame>
       <publishWheelJointState>true</publishWheelJointState>
       <!--odometrySource>encoder</odometrySource-->
       <odometrySource>$(arg odom_source)</odometrySource>
@@ -88,7 +88,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
      <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
        <alwaysOn>true</alwaysOn>
        <updateRate>100.0</updateRate>
-       <bodyName>base_link</bodyName>
+       <bodyName>$(arg base_frame)</bodyName>
        <topicName>${ns}/base_pose_ground_truth</topicName>
        <gaussianNoise>0.01</gaussianNoise>
        <frameName>map</frameName>

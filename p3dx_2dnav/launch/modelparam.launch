@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="param_name" default="robot_description" />
+  <arg name="contact" default="1" />
+  <arg name="laser_noise" default="0.01" />
+  <arg name="odom_source" default="encoder" />
+  <arg name="base_frame" default="base_link"/>
+  <arg name="map_frame" default="map"/>
+  <arg name="world_frame" default="world"/>
+  <arg name="odometry_frame" default="odom"/>
+  <arg name="laser_frame" default="lms100"/>
+  
+  <!-- Load the URDF into the ROS Parameter Server -->
+  <param name="$(arg param_name)" command="$(find xacro)/xacro.py $(find p3dx_description)/urdf/pioneer3dx.xacro contact:=$(arg contact) laser_noise:=$(arg laser_noise) odom_source:=$(arg odom_source) base_frame:=$(arg base_frame) map_frame:=$(arg map_frame) world_frame:=$(arg world_frame) odometry_frame:=$(arg odometry_frame) laser_frame:=$(arg laser_frame)" />
+
+</launch>

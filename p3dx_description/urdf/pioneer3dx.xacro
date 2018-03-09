@@ -38,7 +38,7 @@ work original in ucs-ros-pkg.
   <xacro:include filename="$(find p3dx_description)/urdf/pioneer3dx_wheel.xacro" />
 
   <!-- chassis -->
-  <link name="base_link">
+  <link name="$(arg base_frame)">
     <inertial>
       <mass value="3.5" />
       <!--<origin xyz="-0.025 0 -0.223"/> -->
@@ -94,7 +94,7 @@ work original in ucs-ros-pkg.
 
   <joint name="base_top_joint" type="fixed">
     <origin xyz="-0.045 0 0.234" rpy="0 0 0" />
-    <parent link="base_link" />
+    <parent link="$(arg base_frame)" />
     <child link="top_plate" />
   </joint>
 
@@ -132,7 +132,7 @@ work original in ucs-ros-pkg.
     <anchor xyz="0 0 0" />
     <limit effort="100" velocity="100" k_velocity="0" />
     <joint_properties damping="0.0" friction="0.0" />
-    <parent link="base_link" />
+    <parent link="$(arg base_frame)" />
     <child link="swivel" />
   </joint>
 
@@ -210,8 +210,8 @@ work original in ucs-ros-pkg.
     <child link="center_hubcap"/>
   </joint>
 
-  <xacro:p3dx_wheel suffix="left" parent="base_link" reflect="1" contact="$(arg contact)"/>
-  <xacro:p3dx_wheel suffix="right" parent="base_link" reflect="-1" contact="$(arg contact)"/>
+  <xacro:p3dx_wheel suffix="left" parent="$(arg base_frame)" reflect="1" contact="$(arg contact)"/>
+  <xacro:p3dx_wheel suffix="right" parent="$(arg base_frame)" reflect="-1" contact="$(arg contact)"/>
 
   <!-- front_sonar -->
   <link name="front_sonar">
@@ -242,7 +242,7 @@ work original in ucs-ros-pkg.
 
   <joint name="base_front_joint" type="fixed">
     <origin rpy="0 0 0" xyz="0.109 0 0.209" />
-    <parent link="base_link" />
+    <parent link="$(arg base_frame)" />
     <child link="front_sonar" />
   </joint>
 
@@ -273,7 +273,7 @@ work original in ucs-ros-pkg.
   <joint name="base_$(arg laser_frame)_joint" type="fixed">
     <axis xyz="0 1 0" />
     <origin xyz="0.16 0 0.15" rpy="0 0 0" />
-    <parent link="base_link" />
+    <parent link="$(arg base_frame)" />
     <child link="$(arg laser_frame)" />
   </joint>
 
